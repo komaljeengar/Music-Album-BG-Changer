@@ -37,7 +37,7 @@ const App = () => {
     fetchSpotifyToken();
   }, []);
 
-  // Handle Search Query
+  // Search Query
   const handleSearch = async (query) => {
     try {
       const response = await fetchSpotifyResults(query);
@@ -62,13 +62,13 @@ const App = () => {
     return await res.json();
   };
 
-   // Handle Click on Song Image to Change Background Color
+   // Click on Song Image to Change Background Color
    const handleCardClick = async (imageUrl) => {
     try {
       const vibrant = new Vibrant(imageUrl);
       const palette = await vibrant.getPalette();
-      const dominantColor = palette.Vibrant.hex; // Get the Vibrant color
-      setBgColor(dominantColor); // Set the background color
+      const dominantColor = palette.Vibrant.hex; 
+      setBgColor(dominantColor); 
     } catch (error) {
       console.error('Error getting dominant color from image:', error);
     }
