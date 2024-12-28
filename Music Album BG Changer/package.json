@@ -12,7 +12,8 @@
   "dependencies": {
     "axios": "^1.7.9",
     "canvas": "^3.0.0",
-    "node-vibrant": "^3.1.6",
+    "node-vibrant": "^4.0.0",
+    "phin": "^3.7.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
@@ -29,6 +30,6 @@
     "globals": "^15.14.0",
     "postcss": "^8.4.49",
     "tailwindcss": "^3.4.17",
-    "vite": "^6.0.5"
+    "vite": "^6.0.6"
   }
 }
