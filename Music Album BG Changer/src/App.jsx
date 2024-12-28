@@ -12,8 +12,8 @@ const App = () => {
   // Fetch Spotify Token
   useEffect(() => {
     const fetchSpotifyToken = async () => {
-      const clientId = '0ebd10deee2343e88ea565cc4b788975';
-      const clientSecret = '9237b86ae7c2472d95a9b9d84b839d44';
+      const clientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
+      const clientSecret = import.meta.env.VITE_SPOTIFY_CLIENT_SECRET;
 
       const base64Credentials = btoa(`${clientId}:${clientSecret}`);
 
