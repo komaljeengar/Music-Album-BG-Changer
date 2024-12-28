@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import SearchBar from './SearchBar'; 
+import SearchBar from './SearchBar';
 import axios from 'axios';
-import Vibrant from 'node-vibrant';
-
+import ColorThief from 'colorthief';
 
 const App = () => {
   const [token, setToken] = useState('');
@@ -12,10 +11,10 @@ const App = () => {
   // Fetch Spotify Token
   useEffect(() => {
     const fetchSpotifyToken = async () => {
-       const clientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
-       const clientSecret = import.meta.env.VITE_SPOTIFY_CLIENT_SECRET;
+      const clientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
+      const clientSecret = import.meta.env.VITE_SPOTIFY_CLIENT_SECRET;
 
-       const base64Credentials = btoa(`${clientId}:${clientSecret}`);
+      const base64Credentials = btoa(`${clientId}:${clientSecret}`);
 
       try {
         const response = await axios.post(
@@ -62,18 +61,22 @@ const App = () => {
     return await res.json();
   };
 
-   // Click on Song Image to Change Background Color
-   const handleCardClick = async (imageUrl) => {
-    try {
-      const vibrant = new Vibrant(imageUrl);
-      const palette = await vibrant.getPalette();
-      const dominantColor = palette.Vibrant.hex; 
-      setBgColor(dominantColor); 
-    } catch (error) {
-      console.error('Error getting dominant color from image:', error);
-    }
-  };
+  // Click on Song Image to Change Background Color
+  const handleCardClick = (imageUrl) => {
+    const img = new Image();
+    img.crossOrigin = 'Anonymous'; // Prevent CORS issues
+    img.src = imageUrl;
 
+    img.onload = () => {
+      const colorThief = new ColorThief();
+      const [r, g, b] = colorThief.getColor(img);
+      setBgColor(`rgb(${r}, ${g}, ${b})`);
+    };
+
+    img.onerror = () => {
+      console.error('Error loading image for color extraction');
+    };
+  };
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center" style={{ backgroundColor: bgColor }}>
@@ -90,6 +93,7 @@ const App = () => {
               src={song.album.images?.[0]?.url || 'https://via.placeholder.com/150'}
               alt={song.name}
               className="w-full h-48 object-cover rounded-md mb-4"
+              crossOrigin="anonymous"
             />
             <h3 className="text-lg font-semibold">{song.name}</h3>
             <p className="text-sm text-gray-600">{song.artists?.[0]?.name || 'Unknown Artist'}</p>
