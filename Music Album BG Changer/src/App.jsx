@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import SearchBar from './SearchBar'; // Ensure the path is correct
+import SearchBar from './SearchBar'; 
 import axios from 'axios';
+import Vibrant from 'node-vibrant';
+
 
 const App = () => {
   const [token, setToken] = useState('');
   const [results, setResults] = useState([]);
+  const [bgColor, setBgColor] = useState('#ffffff');
 
   // Fetch Spotify Token
   useEffect(() => {
@@ -59,13 +62,30 @@ const App = () => {
     return await res.json();
   };
 
+   // Handle Click on Song Image to Change Background Color
+   const handleCardClick = async (imageUrl) => {
+    try {
+      const vibrant = new Vibrant(imageUrl);
+      const palette = await vibrant.getPalette();
+      const dominantColor = palette.Vibrant.hex; // Get the Vibrant color
+      setBgColor(dominantColor); // Set the background color
+    } catch (error) {
+      console.error('Error getting dominant color from image:', error);
+    }
+  };
+
+
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-4">
+    <div className="min-h-screen flex flex-col items-center justify-center" style={{ backgroundColor: bgColor }}>
       <h1 className="text-4xl font-bold text-center mb-8 text-black">Search for Songs</h1>
       <SearchBar onSearch={handleSearch} />
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-8 w-full max-w-4xl">
         {results.map((song) => (
-          <div key={song.id} className="bg-white p-4 rounded-lg shadow-md text-center">
+          <div
+            key={song.id}
+            className="bg-white p-4 rounded-lg shadow-md text-center cursor-pointer"
+            onClick={() => handleCardClick(song.album.images?.[0]?.url || 'https://via.placeholder.com/150')}
+          >
             <img
               src={song.album.images?.[0]?.url || 'https://via.placeholder.com/150'}
               alt={song.name}
