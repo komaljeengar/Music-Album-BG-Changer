@@ -12,10 +12,10 @@ const App = () => {
   // Fetch Spotify Token
   useEffect(() => {
     const fetchSpotifyToken = async () => {
-      const clientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
-      const clientSecret = import.meta.env.VITE_SPOTIFY_CLIENT_SECRET;
+       const clientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
+       const clientSecret = import.meta.env.VITE_SPOTIFY_CLIENT_SECRET;
 
-      const base64Credentials = btoa(`${clientId}:${clientSecret}`);
+       const base64Credentials = btoa(`${clientId}:${clientSecret}`);
 
       try {
         const response = await axios.post(
